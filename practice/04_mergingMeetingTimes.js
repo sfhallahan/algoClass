@@ -29,6 +29,51 @@ your function would return:
 
 Do not assume the meetings are in order. The meeting times are coming from multiple teams.
 
-Write a solution that's efficient even when we can't put a nice upper bound on the numbers representing our time ranges. Here we've simplified our times down to the number of 30-minute slots past 9:00 am. But we want the function to work even for very large numbers, like Unix timestamps. In any case, the spirit of the challenge is to merge meetings where startTime and endTime don't have an upper bound.
+Write a solution that's efficient even when we can't put a nice upper bound on the numbers representing our time ranges. 
+Here we've simplified our times down to the number of 30-minute slots past 9:00 am. 
+But we want the function to work even for very large numbers, like Unix timestamps. In any case, the spirit 
+of the challenge is to merge meetings where startTime and endTime don't have an upper bound.
 
 */
+
+/* 
+
+You were able to do this by peeking at the answer, go back and do it again
+
+*/
+
+function byStartTime(a, b) {
+  return a.startTime >= b.startTime ? 1 : -1;
+}
+
+function mergeRanges(meetings) {
+  let meetingsCopy = JSON.parse(JSON.stringify(meetings));
+  let sortedMeetings = meetingsCopy.sort(byStartTime);
+
+  let mergedMeetings = [sortedMeetings[0]];
+
+  for (let i = 1; i < sortedMeetings.length; i++) {
+    let first = mergedMeetings[mergedMeetings.length - 1];
+    let second = sortedMeetings[i];
+
+    if (first.endTime >= second.startTime) {
+      if (first.endTime < second.endTime) {
+        first.endTime = second.endTime;
+      }
+    } else {
+      mergedMeetings.push(second);
+    }
+  }
+
+  return mergedMeetings;
+}
+
+const meetings = [
+  { startTime: 0, endTime: 1 },
+  { startTime: 3, endTime: 5 },
+  { startTime: 4, endTime: 8 },
+  { startTime: 10, endTime: 12 },
+  { startTime: 9, endTime: 10 }
+];
+
+console.log(mergeRanges(meetings));
