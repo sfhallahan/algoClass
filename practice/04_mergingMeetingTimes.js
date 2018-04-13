@@ -1,6 +1,8 @@
-/* Your company built an in-house calendar tool called HiCal. You want to add a feature to see the times in a day when everyone is available.
+/* Your company built an in-house calendar tool called HiCal. You want to add a feature to see the times in a day 
+when everyone is available.
 
-To do this, you’ll need to know when any team is having a meeting. In HiCal, a meeting is stored as objects ↴ with integer properties startTime and endTime. These integers represent the number of 30-minute blocks past 9:00am.
+To do this, you’ll need to know when any team is having a meeting. In HiCal, a meeting is stored as objects ↴ with
+integer properties startTime and endTime. These integers represent the number of 30-minute blocks past 9:00am.
 
 For example:
 
@@ -37,9 +39,13 @@ of the challenge is to merge meetings where startTime and endTime don't have an 
 */
 
 /* 
+My reasoning (on the second attempt)
+    one option would be to loop through the meetings and push them to a new array
+    compare whatever value were iterating on to each in the new array, if there is overlap merge them
+    if there isn't push the new meeting to the result array
 
-You were able to do this by peeking at the answer, go back and do it again
-
+    would be better if we could sort it by start time, that way you would only have to make one compare
+    against the new array (the latest meeting)
 */
 
 function byStartTime(a, b) {
@@ -48,20 +54,17 @@ function byStartTime(a, b) {
 
 function mergeRanges(meetings) {
   let meetingsCopy = JSON.parse(JSON.stringify(meetings));
-  let sortedMeetings = meetingsCopy.sort(byStartTime);
+  meetingsCopy.sort(byStartTime);
 
-  let mergedMeetings = [sortedMeetings[0]];
+  let mergedMeetings = [];
+  mergedMeetings.push(meetingsCopy[0]);
 
-  for (let i = 1; i < sortedMeetings.length; i++) {
-    let first = mergedMeetings[mergedMeetings.length - 1];
-    let second = sortedMeetings[i];
-
-    if (first.endTime >= second.startTime) {
-      if (first.endTime < second.endTime) {
-        first.endTime = second.endTime;
-      }
+  for (let i = 1; i < meetingsCopy.length; i++) {
+    let mostRecentMerged = mergedMeetings[mergedMeetings.length - 1];
+    if (meetingsCopy[i].startTime <= mostRecentMerged.endTime) {
+      mostRecentMerged.endTime = Math.max(meetingsCopy[i].endTime, mostRecentMerged.endTime);
     } else {
-      mergedMeetings.push(second);
+      mergedMeetings.push(meetingsCopy[i]);
     }
   }
 
@@ -75,5 +78,3 @@ const meetings = [
   { startTime: 10, endTime: 12 },
   { startTime: 9, endTime: 10 }
 ];
-
-console.log(mergeRanges(meetings));
