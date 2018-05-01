@@ -19,24 +19,24 @@ Example: for amount=4 (4¢) and denominations=[1,2,3] (1¢,2¢ and 3¢), your pr
 */
 
 function makeChange(amount, denominations, combination = []) {
-  let ways = 0;
+	let ways = 0;
 
-  if (amount < 0) {
-    console.log("too many");
-    return 0;
-  }
+	if (amount < 0) {
+		console.log("too many");
+		return 0;
+	}
 
-  if (amount === 0) {
-    console.log("found a way");
+	if (amount === 0) {
+		console.log("found a way");
 
-    return 1;
-  }
+		return 1;
+	}
 
-  denominations.forEach(denom => {
-    ways += makeChange(amount - denom, denominations);
-  });
+	denominations.forEach(denom => {
+		ways += makeChange(amount - denom, denominations);
+	});
 
-  return ways;
+	return ways;
 }
 
 let denominations = [1, 2, 3];
@@ -231,7 +231,7 @@ How do we formalize this process of going from waysOfDoingNCents1 to waysOfDoing
 
 Let's suppose we're partway through already (this is a classic dynamic programming approach). Say we're trying to calculate waysOfDoingNCents1And2[5]. Because we're going bottom-up, we know we already have:
 
-waysOfDoingNCents1And2 for amounts less than 55
+waysOfDoingNCents1And2 for amounts less than 5
 a fully-populated waysOfDoingNCents1
 So how many new ways should we add to waysOfDoingNCents1[5] to get waysOfDoingNCents1And2[5]?
 
@@ -241,12 +241,20 @@ So we can see that:
 
   waysOfDoingNCents1And2[5] = waysOfDoingNCents1[5] + waysOfDoingNCents1And2[5 - 2]
 
-Why don't we also need to check waysOfDoingNCents1And2[5 - 2 - 2] (two 2¢ coins)? Because we already checked waysOfDoingNCents1And2[1] when calculating waysOfDoingNCents1And2[3]. We'd be counting some arrangements multiple times. In other words, waysOfDoingNCents1And2[k] already includes the full count of possibilities for getting kk, including possibilities that use 2¢ any number of times. We're only interested in how many more possibilities we might get when we go from kk to k+2k+2 and thus have the ability to add one more 2¢ coin to each of the possibilities we have for kk.
+Why don't we also need to check waysOfDoingNCents1And2[5 - 2 - 2] (two 2¢ coins)? Because we already checked waysOfDoingNCents1And2[1] 
+when calculating waysOfDoingNCents1And2[3]. We'd be counting some arrangements multiple times. 
+In other words, waysOfDoingNCents1And2[k] already includes the full count of possibilities for getting kk, 
+including possibilities that use 2¢ any number of times. We're only interested in how many more possibilities we might get when we go 
+from kk to k+2k+2 and thus have the ability to add one more 2¢ coin to each of the possibilities we have for kk.
 
 Solution
-We use a bottom-up ↴ algorithm to build up a table waysOfDoingNCents such that waysOfDoingNCents[k] is how many ways we can get to k cents using our denominations. We start with the base case that there's one way to create the amount zero, and progressively add each of our denominations.
+We use a bottom-up ↴ algorithm to build up a table waysOfDoingNCents such that waysOfDoingNCents[k] is how many ways we can get to k 
+cents using our denominations. We start with the base case that there's one way to create the amount zero, and progressively add each 
+of our denominations.
 
-The number of new ways we can make a higherAmount when we account for a new coin is simply waysOfDoingNCents[higherAmount - coin], where we know that value already includes combinations involving coin (because we went bottom-up, we know smaller values have already been calculated).
+The number of new ways we can make a higherAmount when we account for a new coin is simply waysOfDoingNCents[higherAmount - coin], 
+where we know that value already includes combinations involving coin (because we went bottom-up, we know smaller values have already 
+    been calculated).
 
   function changePossibilitiesBottomUp(amount, denominations) {
 
@@ -267,7 +275,7 @@ The number of new ways we can make a higherAmount when we account for a new coin
     return waysOfDoingNcents[amount];
 }
 
-Here's how waysOfDoingNCents would look in successive iterations of our function for amount=55 and denominations=[1,3,5][1,3,5].
+Here's how waysOfDoingNCents would look in successive iterations of our function for amount=55 and denominations=[1,3,5].
 
   ===========
 key:
@@ -319,13 +327,19 @@ O(n*m)O(n∗m) time and O(n)O(n) additional space, where nn is the amount of mon
 What We Learned
 This question is in a broad class called "dynamic programming." We have a bunch more dynamic programming questions we'll go over later.
 
-Dynamic programming is kind of like the next step up from greedy. ↴ You're taking that idea of "keeping track of what we need in order to update the best answer so far," and applying it to situations where the new best answer so far might not just have to do with the previous answer, but some other earlier answer as well.
+Dynamic programming is kind of like the next step up from greedy. ↴ You're taking that idea of "keeping track of what we need in 
+order to update the best answer so far," and applying it to situations where the new best answer so far might not just have to do 
+with the previous answer, but some other earlier answer as well.
 
 So as you can see in this problem, we kept track of all of our previous answers to smaller versions of the problem (called "subproblems") in a big array called waysOfDoingNCents.
 
-Again, same idea of keeping track of what we need in order to update the answer as we go, like we did when storing the max product of 2, min product of 2, etc in the highest product of 3 question. Except now the thing we need to keep track of is all our previous answers, which we're keeping in an array.
+Again, same idea of keeping track of what we need in order to update the answer as we go, like we did when storing the max product of 2, 
+min product of 2, etc in the highest product of 3 question. Except now the thing we need to keep track of is all our previous answers, 
+which we're keeping in an array.
 
-We built that array bottom-up, but we also talked about how we could do it top-down and memoize. Going bottom-up is cleaner and usually more efficient, but often it's easier to think of the top-down version first and try to adapt from there.
+We built that array bottom-up, but we also talked about how we could do it top-down and memoize.
+Going bottom-up is cleaner and usually more efficient, but often it's easier to think of the top-down version first and try to adapt 
+from there.
 
 Dynamic programming is a weak point for lots of candidates. If this one was tricky for you, don't fret. We have more coming later.
 */
