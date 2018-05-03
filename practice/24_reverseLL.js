@@ -17,8 +17,8 @@ Here's a sample linked list node class:
 */
 
 function LinkedListNode(value) {
-	this.value = value;
-	this.next = null;
+  this.value = value;
+  this.next = null;
 }
 
 const a = new LinkedListNode("a");
@@ -28,36 +28,36 @@ a.next = b;
 b.next = c;
 
 function reverseLinkedList(head) {
-	// check head.next, else throw error
-	if (!head || !head.next) throw new Error("linked list must be atleast 2 values");
+  // check head.next, else throw error
+  if (!head || !head.next) throw new Error("linked list must be atleast 2 values");
 
-	let prevNode = head;
-	let currentNode = head.next;
-	head.next = null;
-	let tempNext;
+  let prevNode = head;
+  let currentNode = head.next;
+  head.next = null;
+  let tempNext;
 
-	let endOfList = false;
+  let endOfList = false;
 
-	while (!endOfList) {
-		if (currentNode.next) {
-			tempNext = currentNode.next;
-			currentNode.next = prevNode;
-			prevNode = currentNode;
-			currentNode = tempNext;
-		} else {
-			currentNode.next = prevNode;
-			endOfList = true;
-		}
-	}
-	return currentNode;
+  while (!endOfList) {
+    if (currentNode.next) {
+      tempNext = currentNode.next;
+      currentNode.next = prevNode;
+      prevNode = currentNode;
+      currentNode = tempNext;
+    } else {
+      currentNode.next = prevNode;
+      endOfList = true;
+    }
+  }
+  return currentNode;
 }
 
 function traverseLL(node) {
-	console.log(node);
-	while (node.nextre) {
-		node = node.next;
-		console.log(node);
-	}
+  console.log(node);
+  while (node.next) {
+    node = node.next;
+    console.log(node);
+  }
 }
 
-// a <- b -> c
+// a -> b -> c
