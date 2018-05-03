@@ -30,7 +30,7 @@ Your output rectangle should use this format as well.
 */
 
 // given 2 rect, find overlap
-
+// Solution 1
 function overlapRect(rectOne, rectTwo) {
   const resultRect = {};
   if (rectOne.bottomY <= rectTwo.bottomY && rectOne.bottomY + rectOne.height >= rectTwo.bottomY) {
@@ -60,19 +60,59 @@ function overlapRect(rectOne, rectTwo) {
   return resultRect;
 }
 
+// Solution 2
+function findOverlap(point1, length1, point2, length2) {
+  const highestStartPoint = Math.max(point1, point2);
+  const lowestEndPoint = Math.min(point1 + length1, point2 + length2);
+
+  if (highestStartPoint >= lowestEndPoint) {
+    return {
+      start: null,
+      length: null
+    };
+  }
+
+  return {
+    start: highestStartPoint,
+    length: lowestEndPoint - highestStartPoint
+  };
+}
+
+function overlapRect(rectOne, rectTwo) {
+  const xOverlap = findOverlap(rectOne.leftX, rectOne.width, rectTwo.leftX, rectTwo.width);
+  const yOverlap = findOverlap(rectOne.bottomY, rectOne.height, rectTwo.bottomY, rectTwo.height);
+  console.log(xOverlap, yOverlap);
+  if (!yOverlap.length || !xOverlap.length) {
+    return {
+      leftX: null,
+      bottomY: null,
+      width: null,
+      height: null
+    };
+  }
+  return {
+    leftX: xOverlap.start,
+    bottomY: yOverlap.start,
+    width: xOverlap.length,
+    height: yOverlap.length
+  };
+}
+
 var rectOne = {
   leftX: 1,
   bottomY: 1,
-  width: 1,
-  height: 1
+  width: 7,
+  height: 8
 };
 
 var rectTwo = {
   leftX: 2,
   bottomY: 2,
-  width: 5,
-  height: 5
+  width: 10,
+  height: 10
 };
+
+overlapRect(rectOne, rectTwo);
 /*
 Gotchas
 What if there is no intersection? Does your function do something reasonable in that case?
@@ -243,7 +283,8 @@ What if we had an array of rectangles and wanted to find the overlap between all
 What We Learned
 This is an interesting one because the hard part isn't the time or space optimization—it's getting something that works and is readable.
 
-For problems like this, I often see candidates who can describe the strategy at a high level but trip over themselves when they get into the details.
+For problems like this, I often see candidates who can describe the strategy at a high level but trip over themselves 
+when they get into the details.
 
 Don't let it happen to you. To keep your thoughts clear and avoid bugs, take time to:
 

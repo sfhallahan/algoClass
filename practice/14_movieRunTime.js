@@ -48,7 +48,8 @@ function exactlyTwoMoviesQuadratic(flightLength, movieLengths) {
 }
 
 function exactlyTwoMovies(flightLength, movieLengths) {
-  // sort it?
+  // loop through once to store the store the time remaining for each movie in a set
+  // loop through again doing a look up in the set O(1) time for
 }
 
 movieLengths = [90, 120, 123, 45, 115, 35];

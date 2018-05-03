@@ -28,6 +28,8 @@ function checkBalancedBinary(root) {
   let isBalanced = true;
 
   function traverse(node, currentDepth) {
+    if (!isBalanced) return; // short circuit if we've already found an imbalance
+
     if (!node.left && !node.right) {
       if (!maxDepth) {
         maxDepth = currentDepth;

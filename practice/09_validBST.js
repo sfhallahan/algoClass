@@ -73,4 +73,5 @@ checkValidBST(myTree);
     2       6
   1   3   5    7 
 
+
   */
